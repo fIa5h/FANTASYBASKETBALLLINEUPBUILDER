@@ -400,6 +400,7 @@ function updateFunnelChart(player_id , add_or_remove){
 
 	$("#current_projected_points").effect( "bounce", {times:3}, 300 );
 	$("#current_projected_value").effect( "bounce", {times:3}, 300 );
+	$("#remaining_budget_text").effect( "bounce", {times:3}, 300 );
 
 	cf_rFunnels['cf-funnel-1'].update(newData);
 
