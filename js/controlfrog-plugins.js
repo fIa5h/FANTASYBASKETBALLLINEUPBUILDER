@@ -366,6 +366,8 @@ function RagChart(id, data, labels, options){
 	
 	// Initialise chart
 	this.init();
+
+	$('[data-toggle="tooltip"]').tooltip(); 
 }
 
 
