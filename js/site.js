@@ -203,8 +203,10 @@ function renderMarquee(){
 		$('#marquee').append(table_row);
 		for (var i = 0; i < arrayLength; i++) {
 			var opponent = top_value[i]['opponent'].replace(/\s+/g, '');
-			
-			table_row = "<span style='font-size:85%;'>$"+top_value[i]['price_fanduel']+"</span> "+top_value[i]['first_name']+" "+top_value[i]['last_name']+" v "+opponent+" - "+top_value[i]['projected_fanduel_points']+"<span style='font-size:85%;'> Projected FanDuel points</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+			var text_color = Interpolate(60,parseInt(top_value[i]['projected_fanduel_value']));
+
+			table_row = "<span style='font-size:85%;color:"+text_color+"; !important'>$"+top_value[i]['price_fanduel']+"</span> "+top_value[i]['first_name']+" "+top_value[i]['last_name']+" v "+opponent+" - "+top_value[i]['projected_fanduel_points']+"<span style='font-size:85%;'> Projected FanDuel points</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
 			$('#marquee').append(table_row);
 		}
@@ -220,8 +222,10 @@ function renderMarquee(){
 		$('#marquee').append(table_row);
 		for (var i = 0; i < arrayLength; i++) {
 			var opponent = top_points[i]['opponent'].replace(/\s+/g, '');
+
+			var text_color = Interpolate(55,parseInt(top_value[i]['projected_fanduel_points']));
 			
-			table_row = "<span style='font-size:85%;'>$"+top_points[i]['price_fanduel']+"</span> "+top_points[i]['first_name']+" "+top_points[i]['last_name']+" v "+opponent+" - "+top_points[i]['projected_fanduel_points']+"<span style='font-size:85%;'> Projected FanDuel points</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			table_row = "<span style='font-size:85%;'>$"+top_points[i]['price_fanduel']+"</span> "+top_points[i]['first_name']+" "+top_points[i]['last_name']+" v "+opponent+" - <span style='color:"+text_color+"; !important'>"+top_points[i]['projected_fanduel_points']+"</span><span style='font-size:85%;'> Projected FanDuel points</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
 			$('#marquee').append(table_row);
 		}
@@ -251,7 +255,7 @@ function createOrShowPlayerView(id,clicked_element_id){
 	
 	klon.draggable().resizable();
 	
-	klon.html('<button style="float:right;z-index:500;" type="button" class="btn btn-default" onclick="hideThisPopupContainer(\'player_'+id+'\')">x</button><img src="http://d2o2vmupkirjgs.cloudfront.net/assets/placeholders/avatar_blank@2x.png" style="height:40px;float:left;"/>');
+	klon.html('<button style="float:right;z-index:500;" type="button" class="btn btn-default" onclick="hideThisPopupContainer(\'player_'+id+'\')">x</button><img src="http://d2o2vmupkirjgs.cloudfront.net/assets/placeholders/avatar_blank@2x.png" style="height:40px;float:left;"/>&nbsp;&nbsp;(...)');
 	
 	klon.prependTo( "body" );
 	
