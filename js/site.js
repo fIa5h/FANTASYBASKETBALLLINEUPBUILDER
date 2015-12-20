@@ -173,23 +173,6 @@ function renderMarquee(){
 	    mar.data('interval',setInterval(mar.marquee,1000/60));
 	});
 
-	if(!top_points){
-		console.log('no top points');
-	}else{
-	
-		var arrayLength = top_points.length;
-		var table_row = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Highest Projected Scoring Players</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		$('#marquee').append(table_row);
-		for (var i = 0; i < arrayLength; i++) {
-			var opponent = top_points[i]['opponent'].replace(/\s+/g, '');
-			
-			table_row = "<span style='font-size:85%;'>$"+top_points[i]['price_fanduel']+"</span> "+top_points[i]['first_name']+" "+top_points[i]['last_name']+" v "+opponent+" - "+top_points[i]['projected_fanduel_points']+"<span style='font-size:85%;'> FanDuel points</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-
-			$('#marquee').append(table_row);
-		}
-	
-	}
-	
 	if(!top_value){
 		console.log('no top value');
 	}else{
@@ -200,7 +183,24 @@ function renderMarquee(){
 		for (var i = 0; i < arrayLength; i++) {
 			var opponent = top_value[i]['opponent'].replace(/\s+/g, '');
 			
-			table_row = "<span style='font-size:85%;'>$"+top_value[i]['price_fanduel']+"</span> "+top_value[i]['first_name']+" "+top_value[i]['last_name']+" v "+opponent+" - "+top_value[i]['projected_fanduel_points']+"<span style='font-size:85%;'> FanDuel points</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			table_row = "<span style='font-size:85%;'>$"+top_value[i]['price_fanduel']+"</span> "+top_value[i]['first_name']+" "+top_value[i]['last_name']+" v "+opponent+" - "+top_value[i]['projected_fanduel_points']+"<span style='font-size:85%;'> Projected FanDuel points</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+			$('#marquee').append(table_row);
+		}
+	
+	}
+
+	if(!top_points){
+		console.log('no top points');
+	}else{
+	
+		var arrayLength = top_points.length;
+		var table_row = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Highest Projected Scoring Players</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		$('#marquee').append(table_row);
+		for (var i = 0; i < arrayLength; i++) {
+			var opponent = top_points[i]['opponent'].replace(/\s+/g, '');
+			
+			table_row = "<span style='font-size:85%;'>$"+top_points[i]['price_fanduel']+"</span> "+top_points[i]['first_name']+" "+top_points[i]['last_name']+" v "+opponent+" - "+top_points[i]['projected_fanduel_points']+"<span style='font-size:85%;'> Projected FanDuel points</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
 			$('#marquee').append(table_row);
 		}
@@ -219,18 +219,6 @@ function renderMarquee(){
 function hideThisPopupContainer(id){
 	$('#'+id).remove();
 }
-
-
-
-
-function printMousePos(e) {
-    var cursorX = e.clientX;
-    var cursorY = e.clientY;
-    alert("X: " + cursorX + " Y: " + cursorY);
-}
-
-
-
 
 
 function createOrShowPlayerView(id,clicked_element_id){
@@ -286,12 +274,6 @@ function updateFunnelChart(player_id , add_or_remove){
 
 	if(add_or_remove === 1 || add_or_remove === '1'){
 
-		//
-		if( !updateSelectedPlayers(player_id , 1) ){
-			return;
-		}
-		//
-
 		budget = parseInt(budget);
 
 		budget = parseInt(budget) - parseInt(players_index[player_id][0]['price_fanduel']);
@@ -321,6 +303,12 @@ function updateFunnelChart(player_id , add_or_remove){
 						total_projected_team_turnovers.toFixed(1)
 					];
 
+		//
+		if( !updateSelectedPlayers(player_id , 1) ){
+			return;
+		}
+		//
+
 		$('.add_remove_player_button_'+player_id).each(function(i, obj) {
 		    $(".add_remove_player_button_"+player_id).attr("onclick","updateFunnelChart("+player_id+",0)");
 		    $(".add_remove_player_button_"+player_id).html('<i class="fa fa-times" style="color:#f23c25"></i>');
@@ -329,18 +317,9 @@ function updateFunnelChart(player_id , add_or_remove){
 
 	}else if(add_or_remove === 0 || add_or_remove === '0'){
 
-		//
-		updateSelectedPlayers(player_id , 0);
-		//
-
 		budget = parseInt(budget);
-		console.log(budget);
-
 		var player_price = parseInt(players_index[player_id][0]['price_fanduel']);
-		console.log(player_price);
-
 		budget = parseInt( budget + player_price );
-		console.log(budget);
 
 		var budget_percent = ((budget/60000) * 100).toFixed(0);
 
@@ -379,6 +358,12 @@ function updateFunnelChart(player_id , add_or_remove){
 						total_projected_team_blocks.toFixed(1),
 						total_projected_team_turnovers.toFixed(1)
 					];
+
+		//
+		if( !updateSelectedPlayers(player_id , 0) ){
+			return;
+		}
+		//
 
 		$('.add_remove_player_button_'+player_id).each(function(i, obj) {
 		    $(".add_remove_player_button_"+player_id).attr("onclick","updateFunnelChart("+player_id+",1)");
@@ -494,7 +479,11 @@ function updateSelectedPlayers(player_id , add_or_remove){
 	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+'</td>'+
 	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
 	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
-										'<td></td>');
+										'<td>'+
+											'<span style="cursor: pointer; cursor: hand;" onclick="updateFunnelChart('+this_player['id']+',0);">'+
+													'<i class="fa fa-times" style="color:#f23c25"></i>'+
+											'</span>'+
+										'</td>');
 			}else{
 				alert('too many pgs');
 				return false
@@ -517,7 +506,11 @@ function updateSelectedPlayers(player_id , add_or_remove){
 	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+'</td>'+
 	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
 	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
-										'<td></td>');
+										'<td>'+
+											'<span style="cursor: pointer; cursor: hand;" onclick="updateFunnelChart('+this_player['id']+',0);">'+
+													'<i class="fa fa-times" style="color:#f23c25"></i>'+
+											'</span>'+
+										'</td>');
 			}else{
 				alert('too many sgs');
 				return false
@@ -540,7 +533,11 @@ function updateSelectedPlayers(player_id , add_or_remove){
 	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+'</td>'+
 	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
 	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
-										'<td></td>');
+										'<td>'+
+											'<span style="cursor: pointer; cursor: hand;" onclick="updateFunnelChart('+this_player['id']+',0);">'+
+													'<i class="fa fa-times" style="color:#f23c25"></i>'+
+											'</span>'+
+										'</td>');
 			}else{
 				alert('too many sfs');
 				return false
@@ -548,9 +545,9 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 		}else if(/PF/i.test(this_player['position'])){
 
-			if(pg_count < 2){
+			if(pf_count < 2){
 
-				$( ".selected_sf_slot" ).each(function( index ) {
+				$( ".selected_pf_slot" ).each(function( index ) {
 					var this_status = $( this ).attr("data-status");
 					if(this_status === 0 || this_status === '0'){
 						open_div = $( this ).attr("id");
@@ -563,7 +560,11 @@ function updateSelectedPlayers(player_id , add_or_remove){
 	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+'</td>'+
 	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
 	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
-										'<td></td>');
+										'<td>'+
+											'<span style="cursor: pointer; cursor: hand;" onclick="updateFunnelChart('+this_player['id']+',0);">'+
+													'<i class="fa fa-times" style="color:#f23c25"></i>'+
+											'</span>'+
+										'</td>');
 			}else{
 				alert('too many pfs');
 				return false
@@ -571,7 +572,7 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 		}else if(/C/i.test(this_player['position'])){
 
-			if(pg_count < 1){
+			if(c_count < 1){
 
 				$( ".selected_c_slot" ).each(function( index ) {
 					var this_status = $( this ).attr("data-status");
@@ -586,7 +587,11 @@ function updateSelectedPlayers(player_id , add_or_remove){
 	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+'</td>'+
 	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
 	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
-										'<td></td>');
+										'<td>'+
+											'<span style="cursor: pointer; cursor: hand;" onclick="updateFunnelChart('+this_player['id']+',0);">'+
+													'<i class="fa fa-times" style="color:#f23c25"></i>'+
+											'</span>'+
+										'</td>');
 			}else{
 				alert('too many cs');
 				return false
@@ -596,7 +601,6 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 	}else{
 
-		alert('remove');
 		removePlayerFromSelectedTable(this_player['id']);
 
 	}
@@ -627,6 +631,16 @@ function removePlayerFromSelectedTable(player_id){
 			}
 		});
 
+		var arrayLength = selected_pgs.length;
+		for (var i = 0; i < arrayLength; i++) {
+			if(selected_pgs[i]['id'].length > 0){
+				var iteration_player_id = parseInt(selected_pgs[i]['id']);
+				if(iteration_player_id === parseInt(player_id) ){
+					selected_pgs.splice(i, 1);
+				}
+			}
+		}
+
 		$('#'+div_to_empty).html('<td>PG</td>'+
                                     '<td></td>'+
                                     '<td></td>'+
@@ -643,6 +657,20 @@ function removePlayerFromSelectedTable(player_id){
 				div_to_empty = $( this ).attr("id");
 			}
 		});
+
+		var arrayLength = selected_sgs.length;
+		//console.log('array length: '+arrayLength);
+		for (var i = 0; i < arrayLength; i++) {
+			//console.log('i: '+i);
+			if(selected_sgs[i]['id'].length > 0){
+				var iteration_player_id = parseInt(selected_sgs[i]['id']);
+				//console.log('iteration player id: '+iteration_player_id);
+				if(iteration_player_id === parseInt(player_id) ){
+					//console.log('here '+iteration_player_id);
+					selected_sgs.splice(i, 1);
+				}
+			}
+		}
 
 		$('#'+div_to_empty).html('<td>SG</td>'+
                                     '<td></td>'+
@@ -662,6 +690,16 @@ function removePlayerFromSelectedTable(player_id){
 			}
 		});
 
+		var arrayLength = selected_sfs.length;
+		for (var i = 0; i < arrayLength; i++) {
+			if(selected_sfs[i]['id'].length > 0){
+				var iteration_player_id = parseInt(selected_sfs[i]['id']);
+				if(iteration_player_id === parseInt(player_id) ){
+					selected_sfs.splice(i, 1);
+				}
+			}
+		}
+
 		$('#'+div_to_empty).html('<td>SF</td>'+
                                     '<td></td>'+
                                     '<td></td>'+
@@ -679,6 +717,16 @@ function removePlayerFromSelectedTable(player_id){
 			}
 		});
 
+		var arrayLength = selected_pfs.length;
+		for (var i = 0; i < arrayLength; i++) {
+			if(selected_pfs[i]['id'].length > 0){
+				var iteration_player_id = parseInt(selected_pfs[i]['id']);
+				if(iteration_player_id === parseInt(player_id) ){
+					selected_pfs.splice(i, 1);
+				}
+			}
+		}
+
 		$('#'+div_to_empty).html('<td>PF</td>'+
                                     '<td></td>'+
                                     '<td></td>'+
@@ -695,6 +743,16 @@ function removePlayerFromSelectedTable(player_id){
 				div_to_empty = $( this ).attr("id");
 			}
 		});
+
+		var arrayLength = selected_cs.length;
+		for (var i = 0; i < arrayLength; i++) {
+			if(selected_cs[i]['id'].length > 0){
+				var iteration_player_id = parseInt(selected_cs[i]['id']);
+				if(iteration_player_id === parseInt(player_id) ){
+					selected_cs.splice(i, 1);
+				}
+			}
+		}
 
 		$('#'+div_to_empty).html('<td>C</td>'+
                                     '<td></td>'+

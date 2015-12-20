@@ -364,6 +364,10 @@ if( strpos($file_name, '.csv') === false){
 
     foreach($player as $key=>$value){
 
+      if(!$value){
+        $value = 0;
+      }
+
       $encoded_player_string_string .= '"'.$key.'":'.'"'.$value.'"';
 
       $iteration_count++;
