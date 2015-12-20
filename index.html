@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <title>FANTASY BASKETBALL LINEUP BUILDER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/site.css" rel="stylesheet">
+    <link href="css/controlfrog.css" rel="stylesheet" media="screen">   
+	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	<link href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/cupertino/jquery-ui.css" />
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+	
+	
+	
+	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+	<script src="cache/processed_projected_players.js"></script>
+	<script src="cache/processed_projected_ticker_top_points.js"></script>
+	<script src="cache/processed_projected_ticker_top_value.js"></script>
+	<script src="cache/processed_tweets.js"></script>
+	<script src="js/timeago.js"></script>
+	<script src="js/moment.js"></script>	
+	<script src="js/easypiechart.js"></script>
+	<script src="js/gauge.js"></script>	
+	<script src="js/chart.js"></script>
+	<script src="js/jquery.sparklines.js"></script>			
+    <script src="js/bootstrap.js"></script>
+    <script src="js/controlfrog-plugins.js"></script>
+	<script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+	<!--<script src="https://cdn.datatables.net/1.10.10/js/dataTables.jqueryui.min.js"></script>-->
+
+    
+    <!--[if lt IE 9]>
+		<script src="js/respond.min.js"></script>
+		<script src="js/excanvas.min.js"></script>
+	<![endif]-->
+ 	<script>var themeColour = 'black';</script>
+    <script src="js/controlfrog.js"></script>
+	<script src="js/site.js"></script>
+</head>
+
+<body class="black">
+	
+	<div style="height:20px;width:98%;padding-left:25px;padding-top:3px;display:inline-block;">
+		
+		<div class='marquee' id="banner" style="display:none;">
+		    <div class='marquee-text' id="marquee">
+	            <script>
+					renderMarquee();
+				</script>
+		    </div>
+		</div>
+		
+		<div style="width:295px;float:left;position:absolute;height:20px;background:#2b2b2b;-webkit-box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);
+-moz-box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);
+box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);">
+			<span style="font-size:123%;">
+				<header>
+					<p>FANTASY BASKETBALL LINEUP BUILDER</p>
+					<!-- <img src="img/logo.png" style="height:0px"/> -->
+					
+				</header>
+			</span>
+		</div>
+		
+		
+		
+	</div>
+	
+	
+	<div class="cf-nav cf-nav-state-min">
+		<a href="" class="cf-nav-toggle">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</a>
+		
+		<ul>
+			<li class="cf-nav-shortcut">
+				<a href="layout-1.html" class="current active">
+					<span class="cf-nav-min"><span style="color:#81b53 !important;">&bull;</span></span>
+					<span class="cf-nav-max">Daily Lineup Builder</span>
+				</a>
+			</li>
+			<li class="cf-nav-shortcut">
+				<a href="layout-2.html">
+					<span class="cf-nav-min"><span style="color:#81b53 !important;">&bull;</span></span>
+					<span class="cf-nav-max">Daily Briefings</span>
+				</a>
+			</li>
+			<li class="current cf-nav-shortcut">
+				<a href="layout-3.html">
+					<span class="cf-nav-min"><span style="color:#81b53 !important;">&bull;</span></span>
+					<span class="cf-nav-max">About Us</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	
+	<div class="cf-container cf-nav-active">
+
+		<div class="row">
+			<div class="col-sm-3 cf-item">
+				<div class="content">
+					<header>
+						<p><span></span>Your Team</p>
+					</header>
+					<div class="table-responsive">
+                        <table class="table table-condensed">
+                            <tbody>
+                                <tr id="pg_0" class="selected_pg_slot" data-status="0">
+                                    <td>PG</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+									<td></td>
+                                </tr>
+                                <tr id="pg_1" class="selected_pg_slot" data-status="0">
+                                    <td>PG</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+									<td></td>
+                                </tr>
+                                <tr id="sg_0" class="selected_sg_slot" data-status="0">
+                                    <td>SG</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+									<td></td>
+                                </tr>
+                                <tr id="sg_1" class="selected_sg_slot" data-status="0">
+                                    <td>SG</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+									<td></td>
+                                </tr>
+                                <tr id="sf_0" class="selected_sf_slot" data-status="0">
+                                    <td>SF</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+									<td></td>
+                                </tr>
+                                <tr id="sf_1" class="selected_sf_slot" data-status="0">
+                                    <td>SF</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+									<td></td>
+                                </tr>
+                                <tr id="pf_0" class="selected_pf_slot" data-status="0">
+                                    <td>PF</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+									<td></td>
+                                </tr>
+                                <tr id="pf_1" class="selected_pf_slot" data-status="0">
+                                    <td>PF</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+									<td></td>
+                                </tr>
+                                <tr id="c_0" class="selected_c_slot" data-status="0">
+                                    <td>C</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+									<td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+						
+				</div>
+			</div> <!-- //end cf-item -->
+			<div class="col-sm-3 cf-item">
+				<header>
+						<div style="display: inline-block;width:100%;">
+							
+							<div style="float:right;text-align:right;">
+								
+								<div style="height:35px;">
+									<div class="change m-green metric-small" id="current_projected_value" style="position:absolute;">
+										<span class="large">0<span class="small">.0</span></span>
+									</div>
+								</div>
+							
+								<div style="font-size:75%;">
+									Projected $ Team Value
+								</div>
+							</div>
+						
+							<div style="float:left;">
+								
+								<div style="height:35px;">
+									<div class="change m-green metric-small" id="current_projected_points" style="position:absolute;">
+										<span class="large">0<span class="small">.0</span></span>
+									</div>
+								</div>
+							
+								<div style="font-size:75%;">
+									Team Projected Score
+								</div>
+							</div>
+							
+						</div>
+				</header>
+				<div class="content">
+					<div id="cf-funnel-1" class="cf-funnel"></div>
+				
+				</div>
+			</div> <!-- //end cf-item -->
+			<div class="col-sm-3 cf-item">
+				<header>
+					<p><span></span>Remaining Budget</p>
+				</header>
+				<div class="content cf-svp clearfix" id="svp-1">
+					<div class="chart" data-percent="99" data-layout="l-3"></div>
+					<div class="metrics" style="margin-bottom: 52% !important;">
+						<span class="metric" style="font-size:445%;">$60,000</span>
+					</div>
+				</div>
+			</div> <!-- //end cf-item -->
+			<div class="col-sm-3 cf-item">
+				<header>
+					<p><span></span>Live Feed</p>
+				</header>
+				<div class="content cf-rss">
+					<div id="cf-rss-1" class="carousel slide" data-ride="carousel">
+						<div class="carousel-inner" id="tweet-carousel">
+							
+														
+							
+						</div>
+						
+						<script>
+							renderTweets();
+						</script>
+							
+					</div>
+				</div>
+				
+			</div> <!-- //end cf-item -->
+			
+		</div> <!-- //end row -->
+	
+		<div class="row">
+			<div id="fixed-height" class="col-sm-9 cf-item">
+				<header>
+					<div style="height:18px;"></div>
+				</header>
+				<div class="content">
+					<div class="theme-color-text" style="position:absolute;height:15px;">Tonights Projections</div>			
+					<table id="example" class="display compact" cellspacing="0" width="100%">
+				        <thead>
+				            <tr>
+								<th>POS</th>
+				                <th>Name</th>
+				                <th>$</th>
+								<th>VAL</th>
+								<th>DFS PTS</th>
+								<th>OPP</th>
+				                <th>PTS</th>
+				                <th>RBS</th>
+				                <th>AST</th>
+								<th>STL</th>
+								<th>BLK</th>
+								<th>TO</th>
+								<th></th>
+				            </tr>
+				        </thead>
+				        <tbody id="player_table">
+				            <script>
+							
+								renderPlayerTable();
+							
+							</script>
+				        </tbody>
+				    </table>
+						
+					
+				</div>
+			</div> <!-- //end cf-item -->
+			<div class="col-sm-3 cf-item">
+
+				<header>
+					<div style="height:18px;"></div>
+				</header>
+				
+				<div id="chosen_lineups" style="margin-top: 12px;">
+					<span class="theme-color-text">Created Lineups</span>
+					<br/>
+					<div style="background:white;">
+					</div>
+				</div>
+				
+			</div> <!-- //end cf-item -->
+			<!-- <div class="col-sm-3 cf-item" style="z-index:-5;">
+
+				<header>
+					<p><span></span>Selected Player</p>
+				</header>
+
+			</div> --> <!-- //end cf-item -->
+		</div> <!-- //end row -->
+
+	</div> <!-- //end container -->
+	
+	<div style="height:0px;overflow:hidden;">
+		
+		<div id="popup_container" class="popup_container">
+		
+		</div>
+	</div>
+
+</body>
+</html>

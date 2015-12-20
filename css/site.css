@@ -1,0 +1,54 @@
+
+.theme-color-text{
+  color: #a8a8a8 !important;
+  text-transform: uppercase;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  line-height: 1.42857143 !important;
+}
+
+#fixed-height{
+  height:400px !important;
+  padding-bottom: 5px;
+}
+
+
+.popup_container{
+    border:4px solid #CCC;
+    width:200px;
+    height:200px;
+  display:none;
+    /*position:absolute;
+    left:50%;
+    top:50%;*/
+    margin:-25px 0 0 -50px;
+    border-radius:5px;
+  background: rgba(43, 43, 43, .5);
+}
+
+
+#example_filter > div > label{
+   font-weight: 300 !important;
+}
+  
+  
+  div.marquee {
+      white-space:no-wrap;
+      overflow:hidden;
+    float:right;
+    width:98%;
+    position:absolute;
+    padding-left:290px;
+  }
+  div.marquee > div.marquee-text {
+      white-space:nowrap;
+      display:inline;
+      width:auto;
+  }
+
+table.dataTable thead .sorting {
+    background-image: none !important;
+    color: #a8a8a8 !important;
+    text-transform: uppercase;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    font-weight: 300 !important;
+}
