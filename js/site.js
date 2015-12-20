@@ -24,6 +24,8 @@ var this_status = '';
 
 $(document).ready(function() {
 
+	$('[data-toggle="tooltip"]').tooltip(); 
+
 	jQuery("abbr.timeago").timeago();
 	
 	//$('#popup_container').show();
@@ -63,10 +65,17 @@ function renderPlayerTable(){
 			
 			var points = players[i]['projected_fanduel_points'].toString().substring(0, 5);
 			var value = players[i]['projected_fanduel_value'].toString().substring(0, 5);
+
+			var icon = '';
+			if(players[i]['top_pick']){
+				if(players[i]['top_pick'] === 1 || players[i]['top_pick'] === '1'){
+					icon = '&nbsp;<i class="fa fa-arrow-circle-up" style="color:#66ce39" data-toggle="tooltip" data-placement="right" title="Top Pick"></i>';
+				}
+			}
 			
 			var table_row = "<tr>"+
 								"<td>"+players[i]['position']+"</td>"+
-			                	"<td>"+players[i]['first_name']+" "+players[i]['last_name']+"</td>"+
+			                	"<td>"+players[i]['first_name']+" "+players[i]['last_name']+icon+"</td>"+
 				                "<td>"+players[i]['price_fanduel']+"</td>"+
 								"<td>"+value+"</td>"+
 								"<td>"+points+"</td>"+
@@ -414,6 +423,8 @@ function updateFunnelChart(player_id , add_or_remove){
 		rSVP($(this));
 	});
 
+	$('[data-toggle="tooltip"]').tooltip(); 
+
 }
 
 function exportLineupsToCSV(){
@@ -461,6 +472,13 @@ function updateSelectedPlayers(player_id , add_or_remove){
 	this_player['projected_fanduel_points'] = parseFloat(this_player['projected_fanduel_points']);
 	this_player['projected_fanduel_points'] = this_player['projected_fanduel_points'].toFixed(2);
 
+	var icon = '';
+	if(this_player['top_pick']){
+		if(this_player['top_pick'] === 1 || this_player['top_pick'] === '1'){
+			icon = '&nbsp;<i class="fa fa-arrow-circle-up" style="color:#66ce39" data-toggle="tooltip" data-placement="right" title="Top Pick"></i>';
+		}
+	}
+
 	if(add_or_remove === 1 || add_or_remove === '1'){
 
 		if (/PG/i.test(this_player['position'])){
@@ -476,8 +494,10 @@ function updateSelectedPlayers(player_id , add_or_remove){
 				$('#'+open_div).attr("data-status",this_player['id']);
 
 				selected_pgs.push(this_player);
+
+
 				$('#'+open_div).html('<td>PG</td>'+
-	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+'</td>'+
+	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+icon+'</td>'+
 	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
 	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
 										'<td>'+
@@ -504,7 +524,7 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 				selected_sgs.push(this_player);
 				$('#'+open_div).html('<td>SG</td>'+
-	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+'</td>'+
+	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+icon+'</td>'+
 	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
 	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
 										'<td>'+
@@ -531,7 +551,7 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 				selected_sfs.push(this_player);
 				$('#'+open_div).html('<td>SF</td>'+
-	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+'</td>'+
+	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+icon+'</td>'+
 	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
 	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
 										'<td>'+
@@ -558,7 +578,7 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 				selected_pfs.push(this_player);
 				$('#'+open_div).html('<td>PF</td>'+
-	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+'</td>'+
+	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+icon+'</td>'+
 	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
 	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
 										'<td>'+
@@ -585,7 +605,7 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 				selected_cs.push(this_player);
 				$('#'+open_div).html('<td>C</td>'+
-	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+'</td>'+
+	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+icon+'</td>'+
 	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
 	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
 										'<td>'+
@@ -606,6 +626,7 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 	}
 
+	$('[data-toggle="tooltip"]').tooltip(); 
 	return true;
 
 }
@@ -764,6 +785,8 @@ function removePlayerFromSelectedTable(player_id){
 		$( '#'+div_to_empty ).attr("data-status",0);
 
 	}
+
+	$('[data-toggle="tooltip"]').tooltip(); 
 
 }
 
