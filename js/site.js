@@ -81,14 +81,19 @@ function renderPlayerTable(){
 					icon = '&nbsp;<i class="fa fa-arrow-circle-up" style="color:#66ce39" data-toggle="tooltip" data-placement="right" title="Top Pick"></i>';
 				}
 			}
+
+			var score_color = redScaleInterpolate(55,points);
+			var value_color = redScaleInterpolate(60,value);
+			var minutes_color = redScaleInterpolate(48,parseInt(players[i]['minutes']));
 			
 			var table_row = "<tr>"+
 								"<td>"+players[i]['position']+"</td>"+
 			                	"<td>"+players[i]['first_name']+" "+players[i]['last_name']+icon+"</td>"+
 				                "<td>"+players[i]['price_fanduel']+"</td>"+
-								"<td>"+value+"</td>"+
-								"<td>"+points+"</td>"+
+								"<td style='color:"+value_color+" !important;'>"+value+"</td>"+
+								"<td style='color:"+score_color+" !important;'>"+points+"</td>"+
 								"<td>"+opponent+"</td>"+
+				                "<td style='color:"+minutes_color+" !important;'>"+players[i]['minutes']+"</td>"+
 				                "<td>"+players[i]['points']+"</td>"+
 				                "<td>"+players[i]['rebounds']+"</td>"+
 				                "<td>"+players[i]['assists']+"</td>"+
@@ -123,6 +128,7 @@ function renderPlayerTable(){
 	      null,
 	      null,
 	      null,
+	      null,
 	      { "bSortable": false }
 	    ],
 	    "oLanguage": {
@@ -132,11 +138,8 @@ function renderPlayerTable(){
     } );
 
     return true;
+
 }
-
-
-
-
 
 function renderTweets(){
 	if(!tweets){
@@ -172,8 +175,8 @@ function renderTweets(){
 
 	}
 	return true;
-}
 
+}
 
 
 function renderMarquee(){
@@ -226,6 +229,7 @@ function renderMarquee(){
 	}
 	
 	$('#banner').fadeIn();
+
 }
 
 
@@ -407,12 +411,8 @@ function updateFunnelChart(player_id , add_or_remove){
 		var score_decimal = 0;
 	}
 
-	console.log('value_decimal : '+value_decimal);
-
 	var value_color = generateValueColor(formatted_value[0]);
 	var points_color = generatePointsColor(formatted_score[0]);
-
-	console.log('points: '+points_color);
 
 	$('#current_projected_points').html('<span class="large" style="color: '+points_color+' !important">'+formatted_score[0]+'<span class="small">.'+score_decimal+'</span></span>');
 	$('#current_projected_value').html('<span class="large" style="color: '+value_color+' !important">'+formatted_value[0]+'<span class="small">.'+value_decimal+'</span></span>');
@@ -463,6 +463,7 @@ function exportLineupsToCSV(){
 
 	document.body.appendChild(a);
 	a.click();
+
 }
 
 function updateSelectedPlayers(player_id , add_or_remove){
@@ -509,11 +510,17 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 				selected_pgs.push(this_player);
 
+				var points = parseInt(this_player['projected_fanduel_points']);
+				var value = parseInt(this_player['projected_fanduel_value']);
+
+				var score_color = redScaleInterpolate(55,points);
+				var value_color = redScaleInterpolate(60,value);
+
 
 				$('#'+open_div).html('<td>PG</td>'+
 	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+icon+'</td>'+
-	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
-	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
+	                                    '<td style="color:'+value_color+' !important;">$'+this_player['price_fanduel']+'</td>'+
+	                                    '<td style="color:'+score_color+' !important;">'+this_player['projected_fanduel_points']+'</td>'+
 										'<td>'+
 											'<span style="cursor: pointer; cursor: hand;" onclick="updateFunnelChart('+this_player['id']+',0);">'+
 													'<i class="fa fa-times" style="color:#f23c25"></i>'+
@@ -536,11 +543,16 @@ function updateSelectedPlayers(player_id , add_or_remove){
 				});
 				$('#'+open_div).attr("data-status",this_player['id']);
 
+				var points = parseInt(this_player['projected_fanduel_points']);
+				var value = parseInt(this_player['projected_fanduel_value']);
+				var score_color = redScaleInterpolate(55,points);
+				var value_color = redScaleInterpolate(60,value);
+
 				selected_sgs.push(this_player);
 				$('#'+open_div).html('<td>SG</td>'+
 	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+icon+'</td>'+
-	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
-	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
+	                                    '<td style="color:'+value_color+' !important;">$'+this_player['price_fanduel']+'</td>'+
+	                                    '<td style="color:'+score_color+' !important;">'+this_player['projected_fanduel_points']+'</td>'+
 										'<td>'+
 											'<span style="cursor: pointer; cursor: hand;" onclick="updateFunnelChart('+this_player['id']+',0);">'+
 													'<i class="fa fa-times" style="color:#f23c25"></i>'+
@@ -563,11 +575,16 @@ function updateSelectedPlayers(player_id , add_or_remove){
 				});
 				$('#'+open_div).attr("data-status",this_player['id']);
 
+				var points = parseInt(this_player['projected_fanduel_points']);
+				var value = parseInt(this_player['projected_fanduel_value']);
+				var score_color = redScaleInterpolate(55,points);
+				var value_color = redScaleInterpolate(60,value);
+
 				selected_sfs.push(this_player);
 				$('#'+open_div).html('<td>SF</td>'+
 	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+icon+'</td>'+
-	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
-	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
+	                                    '<td style="color:'+value_color+' !important;">$'+this_player['price_fanduel']+'</td>'+
+	                                    '<td style="color:'+score_color+' !important;">'+this_player['projected_fanduel_points']+'</td>'+
 										'<td>'+
 											'<span style="cursor: pointer; cursor: hand;" onclick="updateFunnelChart('+this_player['id']+',0);">'+
 													'<i class="fa fa-times" style="color:#f23c25"></i>'+
@@ -590,11 +607,16 @@ function updateSelectedPlayers(player_id , add_or_remove){
 				});
 				$('#'+open_div).attr("data-status",this_player['id']);
 
+				var points = parseInt(this_player['projected_fanduel_points']);
+				var value = parseInt(this_player['projected_fanduel_value']);
+				var score_color = redScaleInterpolate(55,points);
+				var value_color = redScaleInterpolate(60,value);
+
 				selected_pfs.push(this_player);
 				$('#'+open_div).html('<td>PF</td>'+
 	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+icon+'</td>'+
-	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
-	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
+	                                    '<td style="color:'+value_color+' !important;">$'+this_player['price_fanduel']+'</td>'+
+	                                    '<td style="color:'+score_color+' !important;">'+this_player['projected_fanduel_points']+'</td>'+
 										'<td>'+
 											'<span style="cursor: pointer; cursor: hand;" onclick="updateFunnelChart('+this_player['id']+',0);">'+
 													'<i class="fa fa-times" style="color:#f23c25"></i>'+
@@ -617,11 +639,16 @@ function updateSelectedPlayers(player_id , add_or_remove){
 				});
 				$('#'+open_div).attr("data-status",this_player['id']);
 
+				var points = parseInt(this_player['projected_fanduel_points']);
+				var value = parseInt(this_player['projected_fanduel_value']);
+				var score_color = redScaleInterpolate(55,points);
+				var value_color = redScaleInterpolate(60,value);
+
 				selected_cs.push(this_player);
 				$('#'+open_div).html('<td>C</td>'+
 	                                    '<td>'+this_player['first_name']+' '+this_player['last_name']+icon+'</td>'+
-	                                    '<td>$'+this_player['price_fanduel']+'</td>'+
-	                                    '<td>'+this_player['projected_fanduel_points']+'</td>'+
+	                                    '<td style="color:'+value_color+' !important;">$'+this_player['price_fanduel']+'</td>'+
+	                                    '<td style="color:'+score_color+' !important;">'+this_player['projected_fanduel_points']+'</td>'+
 										'<td>'+
 											'<span style="cursor: pointer; cursor: hand;" onclick="updateFunnelChart('+this_player['id']+',0);">'+
 													'<i class="fa fa-times" style="color:#f23c25"></i>'+
@@ -809,6 +836,7 @@ function generateValueColor (value){
 	value = parseInt(value);
 
     return Interpolate(60,value);
+
 }
 
 function generatePointsColor(value){
@@ -821,11 +849,7 @@ function generatePointsColor(value){
 
 function Interpolate(scale_max,value) {
 
-	console.log('value: '+value);
-	console.log('scale_max: '+scale_max);
-
 	var increment = parseInt(scale_max/10);
-	console.log('increment: '+increment);
 	var place_in_range = parseInt(value/increment);
 
 	if(place_in_range == 0){
@@ -834,13 +858,69 @@ function Interpolate(scale_max,value) {
 		place_in_range = 10;
 	}
 
-	return Color(place_in_range);
+	return greyToGreenColor(place_in_range);
     
 }
 
-function Color(place_in_range) {
+function greyToGreenColor(place_in_range) {
 
-	console.log('place_in_range: '+place_in_range);
+	switch (place_in_range) {
+
+	    case 1:
+	    	var color = '#A3A3A3';
+	    	break;
+	    case 2:
+			var color = '#9CA797';
+			break;
+		case 3:
+			var color = '#95AC8B';
+			break;
+		case 4:
+			var color = '#8EB17F';
+			break;
+		case 5:
+			var color = '#87B673';
+			break;
+		case 6:
+			var color = '#81BA68';
+			break;
+		case 7:
+			var color = '#7ABF5C';
+			break;
+		case 8:
+			var color = '#73C450';
+			break;
+		case 9:
+			var color = '#6CC944';
+			break;
+		case 10:
+			var color = '#66CE39';
+			break;
+		default: 
+	        var color = '#A3A3A3';
+	        break;
+	}
+
+	return color;
+    
+}
+
+function redScaleInterpolate(scale_max,value) {
+
+	var increment = parseInt(scale_max/10);
+	var place_in_range = parseInt(value/increment);
+
+	if(place_in_range == 0){
+		place_in_range == 1;
+	}if(place_in_range > 10){
+		place_in_range = 10;
+	}
+
+	return redToGreenColor(place_in_range);
+   
+}
+
+function redToGreenColor(place_in_range) {
 
 	switch (place_in_range) {
 
@@ -882,4 +962,5 @@ function Color(place_in_range) {
 	return color;
     
 }
+
 
