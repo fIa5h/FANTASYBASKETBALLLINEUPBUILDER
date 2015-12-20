@@ -185,10 +185,11 @@ box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);">
 				<header>
 						<div style="display: inline-block;width:100%;">
 							
-							<div style="float:right;text-align:right;">
+							<div style="float:right;text-align:right;" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Your team's projected value =  (Score/Cost) * 10000">
 								
 								<div style="height:35px;">
-									<div class="change m-green metric-small" id="current_projected_value" style="position:absolute;">
+									<!-- m-green -->
+									<div class="change metric-small" id="current_projected_value" style="position:absolute;color:#F23C25;">
 										<span class="large">0<span class="small">.0</span></span>
 									</div>
 								</div>
@@ -198,10 +199,11 @@ box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);">
 								</div>
 							</div>
 						
-							<div style="float:left;">
+							<div style="float:left;" data-toggle="tooltip" data-container="body" data-placement="bottom" title="Your team's projected Score  =  (PTS + REB*1.2 + AST*1.5 + STL*2 + BLK*2 - TO)">
 								
 								<div style="height:35px;">
-									<div class="change m-green metric-small" id="current_projected_points" style="position:absolute;">
+									<!-- m-green -->
+									<div class="change metric-small" id="current_projected_points" style="position:absolute;color:#F23C25;">
 										<span class="large">0<span class="small">.0</span></span>
 									</div>
 								</div>
@@ -258,7 +260,7 @@ box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);">
 					<div style="height:18px;"></div>
 				</header>
 				<div class="content">
-					<div class="theme-color-text" style="position:absolute;height:15px;">Tonights Projections</div>			
+					<div class="theme-color-text" style="position:absolute;height:15px;">Tonights Players</div>			
 					<table id="example" class="display compact" cellspacing="0" width="100%">
 				        <thead>
 				            <tr>

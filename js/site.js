@@ -47,6 +47,15 @@ $(document).ready(function() {
 		// Dummy data for Funnel chart
 		funData = ['0.0','0.0','0.0','0.0','0.0','0.0'];
 		funLabels = ['Points','Rebounds','Assists','Steals','Blocks','Turnovers'];
+
+		// DEVELOPER NOTE
+
+		// IF YOU ARE INTERESTED IN CUSTOM COLORS
+
+		// customColors:['#66ce39','#66ce39','#66ce39','#66ce39','#66ce39','#f23c25']
+
+		// DOES NOT WORK - I HARDED CODED AN ITERATION COUNTER IN controlfrog-plugins.js
+
 		funOptions = {layout:'left',barOpacity:true,customColors:['#66ce39','#66ce39','#66ce39','#66ce39','#66ce39','#f23c25'] };
 		
 		cf_rFunnels[$(this).prop('id')] = new FunnelChart($(this).prop('id'), funData, funLabels, funOptions);
@@ -218,11 +227,6 @@ function renderMarquee(){
 	
 	$('#banner').fadeIn();
 }
-
-
-
-
-
 
 
 function hideThisPopupContainer(id){
@@ -403,9 +407,15 @@ function updateFunnelChart(player_id , add_or_remove){
 		var score_decimal = 0;
 	}
 
+	console.log('value_decimal : '+value_decimal);
 
-	$('#current_projected_points').html('<span class="large">'+formatted_score[0]+'<span class="small">.'+score_decimal+'</span></span>');
-	$('#current_projected_value').html('<span class="large">'+formatted_value[0]+'<span class="small">.'+value_decimal+'</span></span>');
+	var value_color = generateValueColor(formatted_value[0]);
+	var points_color = generatePointsColor(formatted_score[0]);
+
+	console.log('points: '+points_color);
+
+	$('#current_projected_points').html('<span class="large" style="color: '+points_color+' !important">'+formatted_score[0]+'<span class="small">.'+score_decimal+'</span></span>');
+	$('#current_projected_value').html('<span class="large" style="color: '+value_color+' !important">'+formatted_value[0]+'<span class="small">.'+value_decimal+'</span></span>');
 
 	$("#current_projected_points").effect( "bounce", {times:3}, 300 );
 	$("#current_projected_value").effect( "bounce", {times:3}, 300 );
@@ -416,7 +426,11 @@ function updateFunnelChart(player_id , add_or_remove){
 	//global budget
 	$('#svp-1 .chart').attr('data-percent', budget_percent);
 	// Update the UI metric
-	$('#svp-1 .metric').html('$'+budget);
+	if(budget < 0){
+		$('#svp-1 .metric').html('<span style="color:#f23c25">$'+budget+'</span>');
+	}else{
+		$('#svp-1 .metric').html('$'+budget);
+	}
 
 	$('.cf-svp').each(function(){
 		cf_rSVPs[$(this).prop('id')] = {};
@@ -788,5 +802,84 @@ function removePlayerFromSelectedTable(player_id){
 
 	$('[data-toggle="tooltip"]').tooltip(); 
 
+}
+
+function generateValueColor (value){
+
+	value = parseInt(value);
+
+    return Interpolate(60,value);
+}
+
+function generatePointsColor(value){
+
+	value = parseInt(value);
+
+    return Interpolate(350,value);
+
+}
+
+function Interpolate(scale_max,value) {
+
+	console.log('value: '+value);
+	console.log('scale_max: '+scale_max);
+
+	var increment = parseInt(scale_max/10);
+	console.log('increment: '+increment);
+	var place_in_range = parseInt(value/increment);
+
+	if(place_in_range == 0){
+		place_in_range == 1;
+	}if(place_in_range > 10){
+		place_in_range = 10;
+	}
+
+	return Color(place_in_range);
+    
+}
+
+function Color(place_in_range) {
+
+	console.log('place_in_range: '+place_in_range);
+
+	switch (place_in_range) {
+
+	    case 1:
+	    	var color = '#F23C25';
+	    	break;
+	    case 2:
+			var color = '#E24C27';
+			break;
+		case 3:
+			var color = '#D25C29';
+			break;
+		case 4:
+			var color = '#C36C2B';
+			break;
+		case 5:
+			var color = '#B37C2D';
+			break;
+		case 6:
+			var color = '#A48D30';
+			break;
+		case 7:
+			var color = '#949D32';
+			break;
+		case 8:
+			var color = '#85AD34';
+			break;
+		case 9:
+			var color = '#75BD36';
+			break;
+		case 10:
+			var color = '#66CE39';
+			break;
+		default: 
+	        var color = '#F23C25';
+	        break;
+	}
+
+	return color;
+    
 }
 

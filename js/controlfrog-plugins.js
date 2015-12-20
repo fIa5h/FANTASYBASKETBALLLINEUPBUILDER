@@ -305,7 +305,16 @@ function RagChart(id, data, labels, options){
 			}
 		
 			if(opts && opts.customColors){
-				html += '<li style="'+h+' width:'+fdp[i]+'%; opacity:'+os+'; background-color: '+opts.customColors[i]+'"></li>';
+
+				//git force you bitch
+
+				if(i === 5 || i === '5'){
+					var git_force_custom_color = '#f23c25';
+				}else{
+					var git_force_custom_color = opts.customColors[i];
+				}
+
+				html += '<li style="'+h+' width:'+fdp[i]+'%; opacity:'+os+'; background-color: '+git_force_custom_color+'"></li>';
 			}
 			else{
 				html += '<li class="m-green mb" style="'+h+' width:'+fdp[i]+'%; opacity:'+os+'"></li>';
@@ -327,9 +336,23 @@ function RagChart(id, data, labels, options){
 			else{
 				os = 1;
 			}
+
+			var tool_tips = [];
+			tool_tips[0] = 'Your team\'s projected points';
+			tool_tips[1] = 'Your team\'s projected rebounds';
+			tool_tips[2] = 'Your team\'s projected assists';
+			tool_tips[3] = 'Your team\'s projected steals';
+			tool_tips[4] = 'Your team\'s projected blocks';
+			tool_tips[5] = 'Your team\'s projected turnovers';
+
+			if(i === 5 || i === '5'){
+				var git_force_custom_color = '#f23c25';
+			}else{
+				var git_force_custom_color = opts.customColors[i];
+			}
 		
 			if(opts && opts.customColors){
-				html += '<li style="'+h+'"><div><p class="metric" style="opacity:'+os+'; color:'+opts.customColors[i]+'">'+fd[i]+'</p><p>'+fl[i]+'</p></div></li>';
+				html += '<li style="'+h+'"><div data-toggle="tooltip" data-container="body" data-placement="right" title="'+tool_tips[i]+'" ><p class="metric" style="opacity:'+os+'; color:'+git_force_custom_color+'">'+fd[i]+'</p><p>'+fl[i]+'</p></div></li>';
 			}
 			else{
 				html += '<li style="'+h+'"><div><p class="metric m-green mc" style="opacity:'+os+'">'+fd[i]+'</p><p>'+fl[i]+'</p></div></li>';
