@@ -274,6 +274,12 @@ function updateFunnelChart(player_id , add_or_remove){
 
 	if(add_or_remove === 1 || add_or_remove === '1'){
 
+		//
+		if( !updateSelectedPlayers(player_id , 1) ){
+			return;
+		}
+		//
+
 		budget = parseInt(budget);
 
 		budget = parseInt(budget) - parseInt(players_index[player_id][0]['price_fanduel']);
@@ -303,12 +309,6 @@ function updateFunnelChart(player_id , add_or_remove){
 						total_projected_team_turnovers.toFixed(1)
 					];
 
-		//
-		if( !updateSelectedPlayers(player_id , 1) ){
-			return;
-		}
-		//
-
 		$('.add_remove_player_button_'+player_id).each(function(i, obj) {
 		    $(".add_remove_player_button_"+player_id).attr("onclick","updateFunnelChart("+player_id+",0)");
 		    $(".add_remove_player_button_"+player_id).html('<i class="fa fa-times" style="color:#f23c25"></i>');
@@ -316,6 +316,12 @@ function updateFunnelChart(player_id , add_or_remove){
 
 
 	}else if(add_or_remove === 0 || add_or_remove === '0'){
+
+		//
+		if( !updateSelectedPlayers(player_id , 0) ){
+			return;
+		}
+		//
 
 		budget = parseInt(budget);
 		var player_price = parseInt(players_index[player_id][0]['price_fanduel']);
@@ -358,12 +364,6 @@ function updateFunnelChart(player_id , add_or_remove){
 						total_projected_team_blocks.toFixed(1),
 						total_projected_team_turnovers.toFixed(1)
 					];
-
-		//
-		if( !updateSelectedPlayers(player_id , 0) ){
-			return;
-		}
-		//
 
 		$('.add_remove_player_button_'+player_id).each(function(i, obj) {
 		    $(".add_remove_player_button_"+player_id).attr("onclick","updateFunnelChart("+player_id+",1)");
