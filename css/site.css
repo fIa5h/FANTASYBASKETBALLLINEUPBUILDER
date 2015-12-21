@@ -55,7 +55,7 @@ div.marquee {
   float:right;
   width:98%;
   position:absolute;
-  padding-left:290px;
+  padding-left:30px;
 }
 div.marquee > div.marquee-text {
     white-space:nowrap;
@@ -64,7 +64,7 @@ div.marquee > div.marquee-text {
 }
 
 .fade-right-for-marquee{
-  width:295px;
+  width:30px;
   float:left;
   position:absolute;
   height:20px;
