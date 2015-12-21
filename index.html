@@ -55,9 +55,7 @@
 		    </div>
 		</div>
 		
-		<div style="width:295px;float:left;position:absolute;height:20px;background:#2b2b2b;-webkit-box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);
--moz-box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);
-box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);">
+		<div class="fade-right-for-marquee">
 			<span style="font-size:123%;">
 				<header>
 					<p>FANTASY BASKETBALL LINEUP BUILDER</p>
@@ -101,7 +99,7 @@ box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);">
 		</ul>
 	</div>
 	
-	<div class="cf-container cf-nav-active">
+	<div class="cf-container cf-nav-active" style="min-width: 1200px;">
 
 		<div class="row">
 			<div class="col-sm-3 cf-item">
@@ -227,13 +225,16 @@ box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);">
 				<div class="content cf-svp clearfix" id="svp-1">
 					<div class="chart" data-percent="99" data-layout="l-3"></div>
 					<div id="remaining_budget_text" class="metrics" style="margin-bottom: 52% !important;">
-						<span class="metric" style="font-size:445%;">$60,000</span>
+						<span class="metric" style="font-size:445%;color:#66CE39;">$60000</span>
+					</div>
+					<div style="width:100%;margin-top:17px;text-align:center;">
+						Avg. Remaining Salary: <span id="avg_remaining_salary" style="color:#66CE39;">$6667</span>
 					</div>
 				</div>
 			</div> <!-- //end cf-item -->
 			<div class="col-sm-3 cf-item">
 				<header>
-					<p><span></span>Live Feed</p>
+					<p><span></span>The Latest...</p>
 				</header>
 				<div class="content cf-rss">
 					<div id="cf-rss-1" class="carousel slide" data-ride="carousel">
@@ -256,6 +257,8 @@ box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);">
 	
 		<div class="row">
 			<div id="fixed-height" class="col-sm-9 cf-item">
+				<div id="player_table_loading" class="loading">
+				</div>
 				<header>
 					<div style="height:18px;"></div>
 				</header>
@@ -283,7 +286,7 @@ box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);">
 				        <tbody id="player_table">
 				            <script>
 							
-								renderPlayerTable();
+								renderPlayerTable(players);
 							
 							</script>
 				        </tbody>
@@ -299,10 +302,30 @@ box-shadow: 13px -5px 37px 12px rgba(43,43,43,1);">
 				</header>
 				
 				<div id="chosen_lineups" style="margin-top: 12px;">
-					<span class="theme-color-text">Created Lineups (...)</span>
+					<span class="theme-color-text">PQL - Player Query Console</span>
+					
 					<br/>
-					<div style="background:white;">
+					
+					<div style="height:400px;">
+						<div id="command_history">
+						</div>
+						<div>
+							<textarea id="command_line" style="width:90%;">
+							</textarea>
+							
+							<script>
+								$('#command_line').keypress(function (e) {
+								 var key = e.which;
+								 if(key == 13)  // the enter key code
+								  {
+									  value = $.trim($('#command_line').val());
+									  alert(value); 
+								  }
+								});
+							</script>
+						</div>
 					</div>
+					
 				</div>
 				
 			</div> <!-- //end cf-item -->

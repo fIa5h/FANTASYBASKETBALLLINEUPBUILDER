@@ -20,7 +20,9 @@ var selected_cs = [];
 
 var open_div = '';
 var div_to_empty = '';	
-var this_status = '';	
+var this_status = '';
+
+var player_table_load_count = 0;	
 
 $(document).ready(function() {
 
@@ -63,46 +65,66 @@ $(document).ready(function() {
 
 } );
 
-function renderPlayerTable(){
-	if(!players){
-		console.log('no players');
+function renderPlayerTable(players_array){
+
+	$('#player_table_loading').fadeIn();
+
+	if(!players_array){
+		console.log('no players_array');
 	}else{
+
+		$('#player_table').html('<tr>'+
+									"<td></td>"+
+									"<td></td>"+
+									"<td></td>"+
+									"<td></td>"+
+									"<td></td>"+
+									"<td></td>"+
+									"<td></td>"+
+									"<td></td>"+
+									"<td></td>"+
+									"<td></td>"+
+									"<td></td>"+
+									"<td></td>"+
+									"<td></td>"+
+									"<td></td>"+
+								'</tr>');
 		
-		var arrayLength = players.length;
+		var arrayLength = players_array.length;
 		for (var i = 0; i < arrayLength; i++) {
-			var opponent = players[i]['opponent'].replace(/\s+/g, '');
+			var opponent = players_array[i]['opponent'].replace(/\s+/g, '');
 			
-			var points = players[i]['projected_fanduel_points'].toString().substring(0, 5);
-			var value = players[i]['projected_fanduel_value'].toString().substring(0, 5);
+			var points = players_array[i]['projected_fanduel_points'].toString().substring(0, 5);
+			var value = players_array[i]['projected_fanduel_value'].toString().substring(0, 5);
 
 			var icon = '';
-			if(players[i]['top_pick']){
-				if(players[i]['top_pick'] === 1 || players[i]['top_pick'] === '1'){
+			if(players_array[i]['top_pick']){
+				if(players_array[i]['top_pick'] === 1 || players_array[i]['top_pick'] === '1'){
 					icon = '&nbsp;<i class="fa fa-arrow-circle-up" style="color:#66ce39" data-toggle="tooltip" data-placement="right" title="Top Pick"></i>';
 				}
 			}
 
 			var score_color = redScaleInterpolate(55,points);
 			var value_color = redScaleInterpolate(60,value);
-			var minutes_color = redScaleInterpolate(48,parseInt(players[i]['minutes']));
+			var minutes_color = redScaleInterpolate(48,parseInt(players_array[i]['minutes']));
 			
 			var table_row = "<tr>"+
-								"<td>"+players[i]['position']+"</td>"+
-			                	"<td>"+players[i]['first_name']+" "+players[i]['last_name']+icon+"</td>"+
+								"<td>"+players_array[i]['position']+"</td>"+
+			                	"<td>"+players_array[i]['first_name']+" "+players_array[i]['last_name']+icon+"</td>"+
 				                "<td>"+players[i]['price_fanduel']+"</td>"+
 								"<td style='color:"+value_color+" !important;'>"+value+"</td>"+
 								"<td style='color:"+score_color+" !important;'>"+points+"</td>"+
 								"<td>"+opponent+"</td>"+
-				                "<td style='color:"+minutes_color+" !important;'>"+players[i]['minutes']+"</td>"+
-				                "<td>"+players[i]['points']+"</td>"+
-				                "<td>"+players[i]['rebounds']+"</td>"+
-				                "<td>"+players[i]['assists']+"</td>"+
-				                "<td>"+players[i]['steals']+"</td>"+
-				                "<td>"+players[i]['blocks']+"</td>"+
-				                "<td>"+players[i]['turnovers']+"</td>"+
+				                "<td style='color:"+minutes_color+" !important;'>"+players_array[i]['minutes']+"</td>"+
+				                "<td>"+players_array[i]['points']+"</td>"+
+				                "<td>"+players_array[i]['rebounds']+"</td>"+
+				                "<td>"+players_array[i]['assists']+"</td>"+
+				                "<td>"+players_array[i]['steals']+"</td>"+
+				                "<td>"+players_array[i]['blocks']+"</td>"+
+				                "<td>"+players_array[i]['turnovers']+"</td>"+
 								"<td>"+'<span class="btn-group btn-group-xs">'+
-											'<button class="btn btn-default btn-small add_remove_player_button_'+players[i]['id']+'" onclick="updateFunnelChart('+players[i]['id']+',1);"><i class="fa fa-plus" style="color:#66ce39"></i></button>&nbsp;'+
-											'<button id="table-button-'+players[i]['id']+'" style="float:right;" type="button" class="btn btn-default btn-small create-popup" onclick="createOrShowPlayerView(\'player_'+players[i]['id']+'\',\'table-button-'+players[i]['id']+'\')"><i class="fa fa-search"></i></button>'+
+											'<button class="btn btn-default btn-small add_remove_player_button_'+players_array[i]['id']+'" onclick="updateFunnelChart('+players_array[i]['id']+',1);"><i class="fa fa-plus" style="color:#66ce39"></i></button>&nbsp;'+
+											'<button id="table-button-'+players_array[i]['id']+'" style="float:right;" type="button" class="btn btn-default btn-small create-popup" onclick="createOrShowPlayerView(\'player_'+players_array[i]['id']+'\',\'table-button-'+players_array[i]['id']+'\')"><i class="fa fa-search"></i></button>'+
 										'</span></td>'+
 							"</tr>";
 
@@ -132,10 +154,12 @@ function renderPlayerTable(){
 	      { "bSortable": false }
 	    ],
 	    "oLanguage": {
-		    "sSearch": "Search Tonight's Players: "
+		    "sSearch": "Search Player Results: "
 		  },
 		"order": [[ 2, "desc" ]]
     } );
+
+    $('#player_table_loading').fadeOut();
 
     return true;
 
@@ -430,11 +454,8 @@ function updateFunnelChart(player_id , add_or_remove){
 	//global budget
 	$('#svp-1 .chart').attr('data-percent', budget_percent);
 	// Update the UI metric
-	if(budget < 0){
-		$('#svp-1 .metric').html('<span style="color:#f23c25">$'+budget+'</span>');
-	}else{
-		$('#svp-1 .metric').html('$'+budget);
-	}
+	var budget_color = calculateBudgetColor();
+	$('#svp-1 .metric').html('<span style="color:'+budget_color+'">$'+budget+'</span>');
 
 	$('.cf-svp').each(function(){
 		cf_rSVPs[$(this).prop('id')] = {};
@@ -704,6 +725,8 @@ function removePlayerFromSelectedTable(player_id){
 				var iteration_player_id = parseInt(selected_pgs[i]['id']);
 				if(iteration_player_id === parseInt(player_id) ){
 					selected_pgs.splice(i, 1);
+					arrayLength = arrayLength-1;
+					break;
 				}
 			}
 		}
@@ -735,6 +758,8 @@ function removePlayerFromSelectedTable(player_id){
 				if(iteration_player_id === parseInt(player_id) ){
 					//console.log('here '+iteration_player_id);
 					selected_sgs.splice(i, 1);
+					arrayLength = arrayLength-1;
+					break;
 				}
 			}
 		}
@@ -763,6 +788,8 @@ function removePlayerFromSelectedTable(player_id){
 				var iteration_player_id = parseInt(selected_sfs[i]['id']);
 				if(iteration_player_id === parseInt(player_id) ){
 					selected_sfs.splice(i, 1);
+					arrayLength = arrayLength-1;
+					break;
 				}
 			}
 		}
@@ -790,6 +817,8 @@ function removePlayerFromSelectedTable(player_id){
 				var iteration_player_id = parseInt(selected_pfs[i]['id']);
 				if(iteration_player_id === parseInt(player_id) ){
 					selected_pfs.splice(i, 1);
+					arrayLength = arrayLength-1;
+					break;
 				}
 			}
 		}
@@ -817,6 +846,8 @@ function removePlayerFromSelectedTable(player_id){
 				var iteration_player_id = parseInt(selected_cs[i]['id']);
 				if(iteration_player_id === parseInt(player_id) ){
 					selected_cs.splice(i, 1);
+					arrayLength = arrayLength-1;
+					break;
 				}
 			}
 		}
@@ -839,7 +870,7 @@ function generateValueColor (value){
 
 	value = parseInt(value);
 
-    return Interpolate(60,value);
+    return Interpolate(100,value);
 
 }
 
@@ -847,7 +878,7 @@ function generatePointsColor(value){
 
 	value = parseInt(value);
 
-    return Interpolate(350,value);
+    return Interpolate(500,value);
 
 }
 
@@ -924,6 +955,21 @@ function redScaleInterpolate(scale_max,value) {
    
 }
 
+function greenScaleInterpolate(scale_max,value) {
+
+	var increment = parseInt(scale_max/10);
+	var place_in_range = parseInt(value/increment);
+
+	if(place_in_range == 0){
+		place_in_range == 1;
+	}if(place_in_range > 10){
+		place_in_range = 10;
+	}
+
+	return greenToRedColor(place_in_range);
+   
+}
+
 function redToGreenColor(place_in_range) {
 
 	switch (place_in_range) {
@@ -965,6 +1011,125 @@ function redToGreenColor(place_in_range) {
 
 	return color;
     
+}
+
+function greenToRedColor(place_in_range) {
+
+	switch (place_in_range) {
+
+	    case 1:
+	    	var color = '#66CE39';
+	    	break;
+	    case 2:
+			var color = '#75BD36';
+			break;
+		case 3:
+			var color = '#85AD34';
+			break;
+		case 4:
+			var color = '#949D32';
+			break;
+		case 5:
+			var color = '#B37C2D';
+			break;
+		case 6:
+			var color = '#C36C2B';
+			break;
+		case 7:
+			var color = '#949D32';
+			break;
+		case 8:
+			var color = '#D25C29';
+			break;
+		case 9:
+			var color = '#E24C27';
+			break;
+		case 10:
+			var color = '#F23C25';
+			break;
+		default: 
+	        var color = '#66CE39';
+	        break;
+	}
+
+	return color;
+    
+}
+
+function countCurrentSelectedPlayers(){
+
+	// var selected_pgs = [];
+	// var selected_sgs = [];
+	// var selected_sfs = [];
+	// var selected_pfs = [];
+	// var selected_cs = [];
+
+	// var this_player = players_index[player_id][0];
+	// var position = this_player['position'];
+	// var player_id = this_player['id'];
+
+	var count = 0;
+
+	count = count + selected_pgs.length;
+	count = count + selected_sgs.length;
+	count = count + selected_sfs.length;
+	count = count + selected_pfs.length;
+	count = count + selected_cs.length;
+
+	return(count);
+
+}
+
+function calculateBudgetColor(){
+	var current_selected_player_count = countCurrentSelectedPlayers();
+	var players_left = 9-current_selected_player_count;
+
+	if(players_left === 0){
+		var average = budget;
+		console.log(1);
+	}else{
+		var average = parseInt(budget/players_left);
+		console.log(2);
+	}
+
+	if(players_left === 9){
+		var color = redScaleInterpolate(6667,1);
+		var salaryAverageColor = greenScaleInterpolate(3500,1);
+		console.log(3);
+	}else{
+
+			if(average > 14000){
+				console.log(4);
+				var color = redScaleInterpolate(6667,6667);
+				var salaryAverageColor = greenScaleInterpolate(3500,3500);
+
+			}else{
+
+				if(players_left === 0){
+					console.log(5);
+					var color = redScaleInterpolate( 1000 , budget );
+					var salaryAverageColor = redScaleInterpolate(1000,budget);
+
+				}else{
+					console.log(7);
+					var color = redScaleInterpolate( 6667 , average );
+					var salaryAverageColor = redScaleInterpolate(8000,average);
+				}
+
+			}
+
+	}
+
+	if(average < 0){
+		average = 0;
+	}
+
+	$('#avg_remaining_salary').css('color',salaryAverageColor);
+	$('#avg_remaining_salary').html('$'+average);
+
+
+
+	return color;
 }
 
 
