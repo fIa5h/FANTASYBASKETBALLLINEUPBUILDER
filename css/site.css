@@ -7,6 +7,10 @@
   z-index: 2;
 }
 
+.selected_row{
+  background-color:#c8ffb0 !important;
+}
+
 .theme-color-text{
   color: #a8a8a8 !important;
   text-transform: uppercase;

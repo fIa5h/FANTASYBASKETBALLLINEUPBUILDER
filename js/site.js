@@ -104,11 +104,35 @@ function renderPlayerTable(players_array){
 				}
 			}
 
+			var position = players_array[i]['position'];
+
+			if (/PG/i.test(position)){
+
+				var row_class = 'pg_row';
+
+			}else if (/SG/i.test(position)){
+
+				var row_class = 'sg_row';
+
+			}else if (/SF/i.test(position)){
+
+				var row_class = 'sf_row';
+
+			}else if (/PF/i.test(position)){
+
+				var row_class = 'pf_row';
+
+			}else if (/C/i.test(position)){
+
+				var row_class = 'c_row';
+
+			}
+
 			var score_color = redScaleInterpolate(55,points);
 			var value_color = redScaleInterpolate(60,value);
 			var minutes_color = redScaleInterpolate(48,parseInt(players_array[i]['minutes']));
 			
-			var table_row = "<tr>"+
+			var table_row = "<tr id='player_table_row"+players_array[i]['id']+"' class="+row_class+">"+
 								"<td>"+players_array[i]['position']+"</td>"+
 			                	"<td>"+players_array[i]['first_name']+" "+players_array[i]['last_name']+icon+"</td>"+
 				                "<td>"+players[i]['price_fanduel']+"</td>"+
@@ -552,7 +576,6 @@ function updateSelectedPlayers(player_id , add_or_remove){
 											'</span>'+
 										'</td>');
 			}else{
-				alert('too many pgs');
 				return false
 			}
 
@@ -584,7 +607,6 @@ function updateSelectedPlayers(player_id , add_or_remove){
 											'</span>'+
 										'</td>');
 			}else{
-				alert('too many sgs');
 				return false
 			}
 
@@ -616,7 +638,6 @@ function updateSelectedPlayers(player_id , add_or_remove){
 											'</span>'+
 										'</td>');
 			}else{
-				alert('too many sfs');
 				return false
 			}
 
@@ -648,7 +669,6 @@ function updateSelectedPlayers(player_id , add_or_remove){
 											'</span>'+
 										'</td>');
 			}else{
-				alert('too many pfs');
 				return false
 			}
 
@@ -680,7 +700,6 @@ function updateSelectedPlayers(player_id , add_or_remove){
 											'</span>'+
 										'</td>');
 			}else{
-				alert('too many cs');
 				return false
 			}
 
@@ -692,8 +711,52 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 	}
 
+	$('#player_table_row'+this_player['id']).toggleClass('selected_row');
+
+	var pg_count = selected_pgs.length;
+	var sg_count = selected_sgs.length;
+	var sf_count = selected_sfs.length;
+	var pf_count = selected_pfs.length;
+	var c_count = selected_cs.length;
+
+	tableRowOpacities(pg_count,sg_count,sf_count,pf_count,c_count);
+
 	$('[data-toggle="tooltip"]').tooltip(); 
 	return true;
+
+}
+
+function tableRowOpacities(pg_count,sg_count,sf_count,pf_count,c_count){
+
+	if(pg_count < 2){
+		$('.pg_row').css('opacity','1');
+	}else{
+		$('.pg_row').css('opacity','0.5');
+	}
+
+	if(sg_count < 2){
+		$('.sg_row').css('opacity','1');
+	}else{
+		$('.sg_row').css('opacity','0.5');
+	}
+
+	if(sf_count < 2){
+		$('.sf_row').css('opacity','1');
+	}else{
+		$('.sf_row').css('opacity','0.5');
+	}
+
+	if(pf_count < 2){
+		$('.pf_row').css('opacity','1');
+	}else{
+		$('.pf_row').css('opacity','0.5');
+	}
+
+	if(c_count < 1){
+		$('.c_row').css('opacity','1');
+	}else{
+		$('.c_row').css('opacity','0.5');
+	}
 
 }
 
