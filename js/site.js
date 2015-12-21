@@ -736,7 +736,7 @@ function tableRowOpacities(pg_count,sg_count,sf_count,pf_count,c_count,new_budge
 
 	var total_count = pg_count + sg_count + sf_count + pf_count + c_count;
 
-	var new_average = new_budget/total_count;
+	var new_average = new_budget / (9-total_count) ;
 
 	if(pg_count < 2){
 		$('.pg_row').css('opacity','1');
@@ -771,15 +771,20 @@ function tableRowOpacities(pg_count,sg_count,sf_count,pf_count,c_count,new_budge
 	$('.player_table_row').each(function() {
 
 	    var price = $(this).attr("data-price");
+	    var theoretical_new_average = (new_budget-price) / ( 9 - (total_count+1) );
 
 	    if( (price > new_budget) || (price === 0) ){
 	    	$(this).css('opacity','0.5');
 		}
 
 		if(new_average <= 3500){
-	    	if(price > 3500){
-	    		$(this).css('opacity','0.5');
-	    	}
+			if(price > 3500){
+				$(this).css('opacity','0.5');
+			}
+	    }
+
+	    if(theoretical_new_average < 3500){
+	    	$(this).css('opacity','0.5');
 	    }
 
 		if($(this).hasClass("selected_row")){
