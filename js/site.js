@@ -1107,8 +1107,8 @@ function calculateBudgetColor(){
 
 				if(players_left === 0){
 					console.log(5);
-					var color = redScaleInterpolate( 1000 , budget );
-					var salaryAverageColor = redScaleInterpolate(1000,budget);
+					var color = greenScaleInterpolate( 1000 , budget );
+					var salaryAverageColor = greenScaleInterpolate(1000,budget);
 
 				}else{
 					console.log(7);
