@@ -1211,7 +1211,9 @@ function calculateBudgetColor(){
 	$('#avg_remaining_salary').css('color',salaryAverageColor);
 	$('#avg_remaining_salary').html('$'+average);
 
-
+	if(budget >= 60000){
+		var color = redScaleInterpolate(6667,6667);
+	}
 
 	return color;
 
