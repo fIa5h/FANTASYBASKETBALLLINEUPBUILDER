@@ -131,8 +131,10 @@ function renderPlayerTable(players_array){
 			var score_color = redScaleInterpolate(55,points);
 			var value_color = redScaleInterpolate(60,value);
 			var minutes_color = redScaleInterpolate(48,parseInt(players_array[i]['minutes']));
+
+			var price = parseInt(players[i]['price_fanduel']);
 			
-			var table_row = "<tr id='player_table_row"+players_array[i]['id']+"' class="+row_class+">"+
+			var table_row = "<tr id='player_table_row"+players_array[i]['id']+"' class='"+row_class+" player_table_row' data-price='"+price+"'>"+
 								"<td>"+players_array[i]['position']+"</td>"+
 			                	"<td>"+players_array[i]['first_name']+" "+players_array[i]['last_name']+icon+"</td>"+
 				                "<td>"+players[i]['price_fanduel']+"</td>"+
@@ -158,8 +160,8 @@ function renderPlayerTable(players_array){
 	}
 	
     $('#example').DataTable( {
-        scrollY:        '50vh',
-        scrollCollapse: true,
+        scrollY:        '80vh',
+        scrollCollapse: false,
         paging:         false,
         "aoColumns": [
 	      null,
@@ -545,6 +547,8 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 	if(add_or_remove === 1 || add_or_remove === '1'){
 
+		var new_temp_budget = budget-parseInt(this_player['price_fanduel']);
+
 		if (/PG/i.test(this_player['position'])){
 
 			if(pg_count < 2){
@@ -707,6 +711,8 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 	}else{
 
+		var new_temp_budget = budget+parseInt(this_player['price_fanduel']);
+
 		removePlayerFromSelectedTable(this_player['id']);
 
 	}
@@ -719,14 +725,14 @@ function updateSelectedPlayers(player_id , add_or_remove){
 	var pf_count = selected_pfs.length;
 	var c_count = selected_cs.length;
 
-	tableRowOpacities(pg_count,sg_count,sf_count,pf_count,c_count);
+	tableRowOpacities(pg_count,sg_count,sf_count,pf_count,c_count,new_temp_budget);
 
 	$('[data-toggle="tooltip"]').tooltip(); 
 	return true;
 
 }
 
-function tableRowOpacities(pg_count,sg_count,sf_count,pf_count,c_count){
+function tableRowOpacities(pg_count,sg_count,sf_count,pf_count,c_count,new_budget){
 
 	if(pg_count < 2){
 		$('.pg_row').css('opacity','1');
@@ -757,6 +763,21 @@ function tableRowOpacities(pg_count,sg_count,sf_count,pf_count,c_count){
 	}else{
 		$('.c_row').css('opacity','0.5');
 	}
+
+	$('.player_table_row').each(function() {
+
+	    var price = $(this).attr("data-price");
+
+	    if( (price > new_budget) || (price === 0) ){
+	    	$(this).css('opacity','0.5');
+		}
+
+		if($(this).hasClass("selected_row")){
+			$(this).css('opacity','1');
+		}
+
+
+	});
 
 }
 
@@ -1193,6 +1214,6 @@ function calculateBudgetColor(){
 
 
 	return color;
-}
 
+}
 
