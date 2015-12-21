@@ -1105,7 +1105,7 @@ function calculateBudgetColor(){
 
 			}else{
 
-				if(players_left === 0){
+				if(players_left === 0 && budget > 0){
 					console.log(5);
 					var color = greenScaleInterpolate( 1000 , budget );
 					var salaryAverageColor = greenScaleInterpolate(1000,budget);
