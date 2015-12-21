@@ -734,6 +734,10 @@ function updateSelectedPlayers(player_id , add_or_remove){
 
 function tableRowOpacities(pg_count,sg_count,sf_count,pf_count,c_count,new_budget){
 
+	var total_count = pg_count + sg_count + sf_count + pf_count + c_count;
+
+	var new_average = new_budget/total_count;
+
 	if(pg_count < 2){
 		$('.pg_row').css('opacity','1');
 	}else{
@@ -771,6 +775,12 @@ function tableRowOpacities(pg_count,sg_count,sf_count,pf_count,c_count,new_budge
 	    if( (price > new_budget) || (price === 0) ){
 	    	$(this).css('opacity','0.5');
 		}
+
+		if(new_average <= 3500){
+	    	if(price > 3500){
+	    		$(this).css('opacity','0.5');
+	    	}
+	    }
 
 		if($(this).hasClass("selected_row")){
 			$(this).css('opacity','1');
