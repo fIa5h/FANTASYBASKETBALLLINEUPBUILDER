@@ -1,4 +1,13 @@
 
+.clear-team{
+  float:right;
+  top:-23px;
+  position:relative;
+  height:0px;
+  cursor: pointer; 
+  cursor: hand;
+}
+
 .fixed-height{
   height:700px !important;
 }
@@ -50,8 +59,8 @@
   
   
 div.marquee {
-    white-space:no-wrap;
-    overflow:hidden;
+  white-space:no-wrap;
+  overflow:hidden;
   float:right;
   width:98%;
   position:absolute;
