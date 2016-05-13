@@ -92,71 +92,78 @@ function renderPlayerTable(players_array){
 		
 		var arrayLength = players_array.length;
 		for (var i = 0; i < arrayLength; i++) {
-			var opponent = players_array[i]['opponent'].replace(/\s+/g, '');
-			
-			var points = players_array[i]['projected_fanduel_points'].toString().substring(0, 5);
-			var value = players_array[i]['projected_fanduel_value'].toString().substring(0, 5);
 
-			var icon = '';
-			if(players_array[i]['top_pick']){
-				if(players_array[i]['top_pick'] === 1 || players_array[i]['top_pick'] === '1'){
-					icon = '&nbsp;<i class="fa fa-arrow-circle-up" style="color:#66ce39" data-toggle="tooltip" data-placement="right" title="Top Pick"></i>';
+			var int_price = parseInt(players[i]['price_fanduel']);
+
+			if(int_price > 0){
+
+				var opponent = players_array[i]['opponent'].replace(/\s+/g, '');
+				var points = players_array[i]['projected_fanduel_points'].toString().substring(0, 5);
+				var value = players_array[i]['projected_fanduel_value'].toString().substring(0, 5);
+
+				var icon = '';
+				if(players_array[i]['top_pick']){
+					if(players_array[i]['top_pick'] === 1 || players_array[i]['top_pick'] === '1'){
+						icon = '&nbsp;<i class="fa fa-arrow-circle-up" style="color:#66ce39" data-toggle="tooltip" data-placement="right" title="Top Pick"></i>';
+					}
 				}
+
+				var position = players_array[i]['position'];
+
+				if (/PG/i.test(position)){
+
+					var row_class = 'pg_row';
+
+				}else if (/SG/i.test(position)){
+
+					var row_class = 'sg_row';
+
+				}else if (/SF/i.test(position)){
+
+					var row_class = 'sf_row';
+
+				}else if (/PF/i.test(position)){
+
+					var row_class = 'pf_row';
+
+				}else if (/C/i.test(position)){
+
+					var row_class = 'c_row';
+
+				}
+
+				var score_color = redScaleInterpolate(55,points);
+				var value_color = redScaleInterpolate(60,value);
+				var minutes_color = redScaleInterpolate(48,parseInt(players_array[i]['minutes']));
+
+				var price = parseInt(players[i]['price_fanduel']);
+				
+				var table_row = "<tr id='player_table_row"+players_array[i]['id']+"' class='"+row_class+" player_table_row' data-price='"+price+"'>"+
+									"<td>"+players_array[i]['position']+"</td>"+
+				                	"<td>"+players_array[i]['first_name']+" "+players_array[i]['last_name']+icon+"</td>"+
+				                	"<td>"+
+					                	'<span class="btn-group btn-group-xs">'+
+											'<button class="btn btn-default btn-small add_remove_player_button_'+players_array[i]['id']+'" onclick="updateFunnelChart('+players_array[i]['id']+',1);"><i class="fa fa-plus" style="color:#66ce39"></i></button>&nbsp;'+
+											'<button id="table-button-'+players_array[i]['id']+'" style="float:right;" type="button" class="btn btn-default btn-small create-popup" onclick="createOrShowPlayerView(\'player_'+players_array[i]['id']+'\',\'table-button-'+players_array[i]['id']+'\')"><i class="fa fa-search"></i></button>'+
+										'</span>'+
+									'</td>'+
+					                "<td>"+players[i]['price_fanduel']+"</td>"+
+									"<td style='color:"+value_color+" !important;'>"+value+"</td>"+
+									"<td style='color:"+score_color+" !important;'>"+points+"</td>"+
+									"<td>"+opponent+"</td>"+
+					                "<td style='color:"+minutes_color+" !important;'>"+players_array[i]['minutes']+"</td>"+
+					                "<td>"+players_array[i]['points']+"</td>"+
+					                "<td>"+players_array[i]['rebounds']+"</td>"+
+					                "<td>"+players_array[i]['assists']+"</td>"+
+					                "<td>"+players_array[i]['steals']+"</td>"+
+					                "<td>"+players_array[i]['blocks']+"</td>"+
+					                "<td>"+players_array[i]['turnovers']+"</td>"+
+								"</tr>";
+
+				$('#player_table').append(table_row);
+
 			}
 
-			var position = players_array[i]['position'];
-
-			if (/PG/i.test(position)){
-
-				var row_class = 'pg_row';
-
-			}else if (/SG/i.test(position)){
-
-				var row_class = 'sg_row';
-
-			}else if (/SF/i.test(position)){
-
-				var row_class = 'sf_row';
-
-			}else if (/PF/i.test(position)){
-
-				var row_class = 'pf_row';
-
-			}else if (/C/i.test(position)){
-
-				var row_class = 'c_row';
-
-			}
-
-			var score_color = redScaleInterpolate(55,points);
-			var value_color = redScaleInterpolate(60,value);
-			var minutes_color = redScaleInterpolate(48,parseInt(players_array[i]['minutes']));
-
-			var price = parseInt(players[i]['price_fanduel']);
-			
-			var table_row = "<tr id='player_table_row"+players_array[i]['id']+"' class='"+row_class+" player_table_row' data-price='"+price+"'>"+
-								"<td>"+players_array[i]['position']+"</td>"+
-			                	"<td>"+players_array[i]['first_name']+" "+players_array[i]['last_name']+icon+"</td>"+
-			                	"<td>"+
-				                	'<span class="btn-group btn-group-xs">'+
-										'<button class="btn btn-default btn-small add_remove_player_button_'+players_array[i]['id']+'" onclick="updateFunnelChart('+players_array[i]['id']+',1);"><i class="fa fa-plus" style="color:#66ce39"></i></button>&nbsp;'+
-										'<button id="table-button-'+players_array[i]['id']+'" style="float:right;" type="button" class="btn btn-default btn-small create-popup" onclick="createOrShowPlayerView(\'player_'+players_array[i]['id']+'\',\'table-button-'+players_array[i]['id']+'\')"><i class="fa fa-search"></i></button>'+
-									'</span>'+
-								'</td>'+
-				                "<td>"+players[i]['price_fanduel']+"</td>"+
-								"<td style='color:"+value_color+" !important;'>"+value+"</td>"+
-								"<td style='color:"+score_color+" !important;'>"+points+"</td>"+
-								"<td>"+opponent+"</td>"+
-				                "<td style='color:"+minutes_color+" !important;'>"+players_array[i]['minutes']+"</td>"+
-				                "<td>"+players_array[i]['points']+"</td>"+
-				                "<td>"+players_array[i]['rebounds']+"</td>"+
-				                "<td>"+players_array[i]['assists']+"</td>"+
-				                "<td>"+players_array[i]['steals']+"</td>"+
-				                "<td>"+players_array[i]['blocks']+"</td>"+
-				                "<td>"+players_array[i]['turnovers']+"</td>"+
-							"</tr>";
-
-			$('#player_table').append(table_row);
 		}
 		
 	}
